@@ -3,16 +3,13 @@
     {
       "path": "pages/home/index",
       "style": {
-        "navigationBarTitleText": "首页",
-        "navigationStyle": "default"
+        "navigationBarTitleText": "首页"
       }
     },
-
     {
       "path": "pages/mine/index",
       "style": {
-        "navigationBarTitleText": "我的",
-        "navigationStyle": "default"
+        "navigationBarTitleText": "我的"
       }
     }
   ],
@@ -57,7 +54,8 @@
 			"van-dialog": "/wxcomponents/vant/dialog/index",
 			"van-nav-bar": "/wxcomponents/vant/nav-bar/index",
 			"van-progress": "/wxcomponents/vant/progress/index"
-		}
+		},
+    "onReachBottomDistance": 500
   },
   "tabBar": {
     "color": "#B5B5B5",
@@ -81,7 +79,6 @@
   },
   "easycom": {
     "custom": {
-      // "RangeDatePick": "@/components/pyh-rdtpicker/pyh-rdtpicker.vue"
     }
   }
 }

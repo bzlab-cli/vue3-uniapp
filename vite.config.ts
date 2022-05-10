@@ -1,13 +1,10 @@
-import path, { resolve } from 'path'
+import { resolve } from 'path'
 import uni from '@dcloudio/vite-plugin-uni'
-import viteSvgIcons from 'vite-plugin-svg-icons'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import eslintPlugin from 'vite-plugin-eslint'
-import vue from '@vitejs/plugin-vue'
 import copy from 'rollup-plugin-copy'
 import Vant from './src/utils/vant'
 
-export default ({ command, mode }: any) => {
+export default ({ command, mode }) => {
   console.log('command', command, mode)
   const getVantPaths = () => {
     const env = {
@@ -29,15 +26,7 @@ export default ({ command, mode }: any) => {
     base: '/',
     plugins: [
       uni(),
-      vue(),
-      vueJsx(),
       eslintPlugin(),
-      // #ifdef H5
-      viteSvgIcons({
-        iconDirs: [path.resolve(process.cwd(), 'src/icons/common'), path.resolve(process.cwd(), 'src/icons/nav-bar')],
-        symbolId: 'icon-[dir]-[name]'
-      }),
-      // #endif
       copy({
         targets: getVantPaths() as any
       })
@@ -73,7 +62,7 @@ export default ({ command, mode }: any) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/common/variables.scss";`
+          additionalData: `@import "@/styles/scss/variables.scss";`
         }
       }
     }
@@ -91,19 +80,3 @@ export default ({ command, mode }: any) => {
 
   return config
 }
-
-// import { defineConfig } from 'vite'
-// import { resolve } from 'path'
-// import uni from '@dcloudio/vite-plugin-uni'
-
-// export default defineConfig({
-//   resolve: {
-//     alias: [
-//       {
-//         find: '@',
-//         replacement: resolve(__dirname, 'src')
-//       }
-//     ]
-//   },
-//   plugins: [uni()]
-// })

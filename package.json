@@ -6,8 +6,6 @@
     "serve:dev": "uni -p mp-weixin --mode dev",
     "build:deploy": "uni build -p mp-weixin --mode deploy",
     "build": "uni build -p mp-weixin --mode prod",
-    "dev:h5": "uni",
-    "build:h5": "uni build",
     "lint": "eslint --ext .js,.jsx,.vue,.ts,.tsx src --fix",
     "mock": "cd mock && ts-node-dev mock.ts"
   },
@@ -34,8 +32,6 @@
     "lodash": "^4.17.20",
     "log4js": "^6.3.0",
     "reflect-metadata": "^0.1.13",
-    "vant": "^3.4.7",
-    "vk-uview-ui": "^1.3.3",
     "vue": "^3.2.26",
     "vuex": "^4.0.2"
   },

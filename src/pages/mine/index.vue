@@ -1,12 +1,16 @@
 <template>
   <view class="mine">
-    <view>{{ name }}</view>
+    <view @click="test">我的</view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const name = ref('我的')
+import { login } from '@/api/user'
+
+const test = () => {
+  console.log('mine')
+  login({ test: 1 })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,0 +1,11 @@
+// define global var
+$defaultSize: 28px;
+$defaultLineHeight: 1;
+$menuText: #7f848e;
+$menuActiveText: #7f848e;
+
+//导出scss定义的样式变量
+:export {
+ menuText: $menuText;
+ menuActiveText: $menuActiveText;
+}

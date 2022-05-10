@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/10/25 18:56:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/04/12 16:23:40
+ * @LastEditTime: 2022/05/10 23:45:16
  */
 
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios'
@@ -22,7 +22,6 @@ declare module 'axios' {
 
 axios.defaults.adapter = function (config: any) {
   return new Promise((resolve, reject) => {
-    console.log('adapter', config)
     uni.request({
       method: config.method.toUpperCase(),
       url: config.baseURL + buildURL(config.url, config.params, config.paramsSerializer),

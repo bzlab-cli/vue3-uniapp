@@ -7,13 +7,21 @@
  * @Description:
  * @Date: 2022/03/11 16:50:49
  * @LastEditors: jrucker
- * @LastEditTime: 2022/04/10 15:02:01
+ * @LastEditTime: 2022/05/10 23:21:58
  */
 
 import { getFileType } from '@/utils'
 import { getToken } from '@/utils/auth'
-import FormData from './form'
-import { getEnv } from '@/config/settings'
+import FormData from './form-data'
+
+export function getEnv(val) {
+  const obj = {
+    development: 'nzf-dev',
+    deployment: 'nzf-dev',
+    production: 'nzf-prod'
+  }
+  return obj[val]
+}
 
 type FileInfo = {
   name: string
@@ -28,14 +36,14 @@ export default class Upload {
     ftp: boolean
     url: string
     header: { 'Content-Type': string }
-    formData: Record<string, unknown>
+    formData: {}
     count: number
     type: 'all' | 'video' | 'image' | 'file'
     sizeType: string[] // 可以指定是原图还是压缩图，默认二者都有
     sourceType: string[] // 可以指定来源是相册还是相机，默认二者都有
   }
   fileInfo: FileInfo
-  constructor(object: any) {
+  constructor(object) {
     this.object = object || {}
     this.obj = {
       ftp: true,
@@ -66,7 +74,7 @@ export default class Upload {
   async uploadImage() {
     if (Object.prototype.toString.call(this.object) !== '[object Object]') return
     const chooseImageResult = (await this.chooseImage()) as any
-    const imgArr = await chooseImageResult.tempFilePaths.map(async (item: any) => {
+    const imgArr = await chooseImageResult.tempFilePaths.map(async item => {
       uni.showLoading({
         title: `正在上传...`
       })
@@ -75,8 +83,12 @@ export default class Upload {
     })
 
     return new Promise(resolve => {
-      Promise.all(imgArr).then(result => {
+      Promise.all(imgArr).then((result: any) => {
         uni.hideLoading()
+        result = result.map((item: any) => {
+          item.url = '/img' + item.url
+          return item
+        })
         resolve(result)
       })
     })
@@ -85,26 +97,53 @@ export default class Upload {
   async uploadFile() {
     if (Object.prototype.toString.call(this.object) !== '[object Object]') return
     const chooseMessageResult = (await this.chooseMessageFile()) as any
-    const imgArr = await chooseMessageResult.tempFiles.map(async (item: any) => {
+    const imgArr = await chooseMessageResult.tempFiles.map(async item => {
       uni.showLoading({
         title: `正在上传...`
       })
       this.fileInfo.name = item.name
-      this.fileInfo.type = getFileType(item.name)
+      this.fileInfo.type = getFileType(item.name) as any
       this.fileInfo.size = item.size
       const uploadFileResult = (await this.handleUploadFile(item.path)) as any
       return uploadFileResult
     })
 
     return new Promise(resolve => {
-      Promise.all(imgArr).then(result => {
+      Promise.all(imgArr).then((result: any) => {
         uni.hideLoading()
+        result = result.map((item: any) => {
+          item.url = '/img' + item.url
+          return item
+        })
+        resolve(result)
+      })
+    })
+  }
+  async uploadVideo() {
+    if (Object.prototype.toString.call(this.object) !== '[object Object]') return
+    const chooseVideo = (await this.chooseVideo()) as any
+    const imgArr = await chooseVideo.map(async item => {
+      uni.showLoading({
+        title: `正在上传...`
+      })
+      this.fileInfo.size = item.size
+      const uploadFileResult = (await this.handleUploadFile(item.tempFilePath)) as any
+      return uploadFileResult
+    })
+
+    return new Promise(resolve => {
+      Promise.all(imgArr).then((result: any) => {
+        uni.hideLoading()
+        result = result.map((item: any) => {
+          item.url = '/img' + item.url
+          return item
+        })
         resolve(result)
       })
     })
   }
 
-  getFileInfo(file: string) {
+  getFileInfo(file) {
     return new Promise(resolve => {
       uni.getFileInfo({
         filePath: file,
@@ -118,9 +157,10 @@ export default class Upload {
     })
   }
 
-  async handleUploadFile(file: string) {
+  async handleUploadFile(file) {
+    console.log('file', file)
     this.obj.url =
-    import.meta.env.VITE_APP_FTP_API + `/ftp/uploadFile?path=${getEnv(import.meta.env.VITE_APP_ENV as string)}/house_file/$md5`
+      process.env.VUE_APP_FTP_API + `/ftp/uploadFile?path=${getEnv(process.env.VUE_APP_ENV)}/house_file/$md5`
     if (this.obj.url.includes('$md5')) {
       await this.getFileInfo(file)
     }
@@ -131,7 +171,7 @@ export default class Upload {
     })
   }
 
-  ftpRequest(file: string) {
+  ftpRequest(file) {
     return new Promise((resolve, reject) => {
       const formData = new FormData() as any
       if (this.fileInfo.name) {
@@ -148,7 +188,7 @@ export default class Upload {
           'Content-Type': data.contentType
         },
         data: data.buffer,
-        success: (res: any) => {
+        success: res => {
           const result = res.data as any
           const url = result.data
           resolve({ url, ...this.fileInfo })
@@ -163,8 +203,10 @@ export default class Upload {
     })
   }
 
-  request(file: string) {
+  request(file) {
     return new Promise((resolve, reject) => {
+      console.log('file', file)
+
       uni.uploadFile({
         url: this.obj.url,
         filePath: file,
@@ -174,7 +216,7 @@ export default class Upload {
           ...this.obj.formData,
           token: getToken()
         },
-        success: (res: any) => {
+        success: res => {
           resolve(JSON.parse(res.data))
         },
         fail: () => {
@@ -193,8 +235,19 @@ export default class Upload {
         count: this.obj.count,
         sizeType: this.obj.sizeType,
         sourceType: this.obj.sourceType,
-        success: (res: any) => {
+        success: res => {
           resolve(res)
+        }
+      })
+    })
+  }
+
+  chooseVideo() {
+    return new Promise(resolve => {
+      uni.chooseVideo({
+        sourceType: this.obj.sourceType,
+        success: res => {
+          resolve([res])
         }
       })
     })
@@ -205,7 +258,7 @@ export default class Upload {
       wx.chooseMessageFile({
         count: this.obj.count,
         type: this.obj.type,
-        success: (res: any) => {
+        success: res => {
           resolve(res)
         }
       })
