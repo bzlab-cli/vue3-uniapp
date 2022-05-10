@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "allowJs": false,
+    "checkJs": false,
+    "jsx": "preserve",
+    "declaration": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "preserveConstEnums": true,
+    "sourceMap": false,
+    "noUnusedLocals": false,
+    "resolveJsonModule": true,
+    "noUnusedParameters": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    //指定默认读取的目录
+    "typeRoots": ["./node_modules/@types/", "./types"],
+    "types": [
+      "node",
+      "@dcloudio/types",
+      "vite/client"
+    ],
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["typings/*"]
+    },
+    "lib": ["esnext", "dom"],
+  },
+  "include": ["src", "typings"]
+}
