@@ -14,9 +14,12 @@
     }
   ],
   "globalStyle": {
+    "enablePullDownRefresh": false,
+    "backgroundTextStyle": "light",
+    "navigationStyle": "custom",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uniapp",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#F8F8F8",
     "usingComponents": {
 			"van-row": "/wxcomponents/vant/row/index",

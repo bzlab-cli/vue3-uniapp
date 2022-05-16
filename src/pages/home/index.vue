@@ -1,11 +1,13 @@
 <template>
   <view class="home">
+    <custom-nav title="首页" />
     <view @click="test">首页</view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import { login } from '@/api/user'
+import customNav from '@/components/custom-nav'
 
 const test = () => {
   console.log('home')

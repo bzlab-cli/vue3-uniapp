@@ -15,8 +15,8 @@ export default ({ command, mode }) => {
 
     const vantPaths = Array.from(Vant(), item => {
       return {
-        src: resolve(`node_modules/@vant/weapp/dist/${item}`),
-        dest: resolve(`dist/${env[mode]}/mp-weixin/wxcomponents/vant`)
+        src: `node_modules/@vant/weapp/dist/${item}`,
+        dest: `dist/${env[mode]}/mp-weixin/wxcomponents/vant`
       }
     })
     return [...vantPaths]
