@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/10/25 18:56:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/10 23:45:16
+ * @LastEditTime: 2022/05/16 21:31:49
  */
 
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios'
@@ -31,7 +31,6 @@ axios.defaults.adapter = function (config: any) {
       responseType: config.responseType,
       sslVerify: config.sslVerify,
       complete: function complete(response: any) {
-        console.log('执行完成：', response)
         response = {
           data: response.data,
           status: response.statusCode,
