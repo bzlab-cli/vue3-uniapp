@@ -1,6 +1,6 @@
 <template>
   <view class="login_wrap">
-    <custom-nav :hide-home="hideNavHome" title=""></custom-nav>
+    <custom-nav hide-home></custom-nav>
     <view class="login_container">
       <view class="login_title">
         <image src="/static/images/login/logo.png"></image>
@@ -74,7 +74,6 @@ import { reactive, toRefs } from 'vue'
 import customNav from '@/components/custom-nav'
 
 const state = reactive({
-  hideNavHome: false,
   mode: '',
   phoneNum: '',
   totalTime: 60,
@@ -133,7 +132,7 @@ const smsLogin = () => {
     showIcon: true
   })
 }
-const { hideNavHome, mode, modifyCanClick, loginTipsChecked, modifyCodeText } = toRefs(state)
+const { mode, modifyCanClick, loginTipsChecked, modifyCodeText } = toRefs(state)
 </script>
 
 <style lang="scss">

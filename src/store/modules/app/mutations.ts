@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/10/25 18:56:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/04/10 14:14:30
+ * @LastEditTime: 2022/05/18 23:15:05
  */
 
 import { MutationTree } from 'vuex'
@@ -17,5 +17,10 @@ export type Mutations<S = AppState> = {
 export const mutations: MutationTree<AppState> & Mutations = {
   [AppMutationTypes.TOGGLE_DEVICE](state: AppState, device: DeviceType) {
     state.device = device
+  },
+  [AppMutationTypes.SET_STATE](state: AppState, payload: any) {
+    Object.keys(payload).forEach(key => {
+      state[key] = payload[key]
+    })
   }
 }

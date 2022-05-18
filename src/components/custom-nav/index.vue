@@ -1,18 +1,15 @@
 <template>
-  <view class="nav-wrap" :style="'background:' + props.bgColor">
-    <view class="status-bar" :style="'height:' + statusBarHeight + 'rpx'"></view>
-    <view class="header" style="height: 46px">
-      <view class="nav-title" :style="'color: ' + props.fontColor">{{ props.title }}</view>
-      <view
-        v-if="showBack || showHome"
-        :class="showBack && showHome ? 'nav-capsule is-both' : 'just-back' + props.borderType === 'gray' ? 'gray' : ''"
-      >
-        <view v-if="showBack" class="nav-icon-wrap" @click="navback">
-          <view class="iconfont icon-back" :style="'color: ' + props.iconColor"></view>
+  <view class="nav-wrap" :style="['background:' + props.bgColor]">
+    <view class="status-bar" :style="['height:' + statusBarHeight + 'rpx']"></view>
+    <view class="header">
+      <view class="nav-title" :style="['color: ' + props.fontColor]">{{ props.title }}</view>
+      <view v-if="showBack || showHome" class="'nav-capsule is-both">
+        <view v-if="showBack" class="nav-icon-wrap" @click="handleBack">
+          <view class="iconfont icon-back" :style="['color: ' + props.iconColor]"></view>
         </view>
-        <view v-if="showBack && showHome" :class="'navbar-v-line ' + props.borderType"></view>
-        <view v-if="showHome" class="nav-icon-wrap" @click="backhome">
-          <view class="iconfont icon-home" :style="'color: ' + props.iconColor"></view>
+        <view v-if="showBack && showHome" :class="['navbar-v-line ' + props.borderType]"></view>
+        <view v-if="showHome" class="nav-icon-wrap" @click="handleHome">
+          <view class="iconfont icon-home" :style="['color: ' + props.iconColor]"></view>
         </view>
       </view>
     </view>
@@ -20,8 +17,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, reactive, watch, toRefs } from 'vue'
+import { defineProps, reactive, watch, toRefs, computed } from 'vue'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const props = defineProps({
   title: {
     type: String,
@@ -43,83 +42,49 @@ const props = defineProps({
     type: String,
     default: '#333'
   },
-  navigateBackAdd: {
-    type: Number,
-    default: 0
+  hideBack: {
+    type: Boolean,
+    default: false
   },
   hideHome: {
     type: Boolean,
     default: false
-  },
-  alwaysHasGoMy: {
-    type: Boolean,
-    default: false
   }
+})
+
+const statusBarHeight = computed(() => {
+  return store.state.app.statusBarHeight
 })
 
 const state = reactive({
-  statusBarHeight: 40,
   showBack: true,
-  showHome: true,
-  needBackToMy: false
+  showHome: true
 })
 
 watch(
-  () => props.hideHome,
-  val => {
-    state.showHome = !val
+  () => [props.hideBack, props.hideHome],
+  ([back, home]) => {
+    state.showBack = !back
+    state.showHome = !home
+  },
+  {
+    immediate: true
   }
 )
 
-watch(
-  () => props.alwaysHasGoMy,
-  val => {
-    // eslint-disable-next-line no-undef
-    let pages = getCurrentPages()
-    if (pages.length === 1) {
-      state.needBackToMy = val
-      state.showBack = val
-    }
-  }
-)
-
-const goToMy = () => {
-  wx.reLaunch({
-    url: '/pages/home/main?tab=me'
-  })
-}
-const navback = () => {
-  if (isPersonalToFamilyHack()) {
-    wx.navigateBack({
-      delta: 2
-    })
-  } else {
-    if (state.needBackToMy) return goToMy()
-    let e = props.navigateBackAdd ? 1 + props.navigateBackAdd : 1
-    wx.navigateBack({
-      delta: e
-    })
-  }
-}
-
-const isPersonalToFamilyHack = () => {
-  let flag = false
-  // eslint-disable-next-line no-undef
-  let pages = getCurrentPages()
-  if (pages && pages.length > 2) {
-    let t = pages[pages.length - 1]
-    let o = pages[pages.length - 2]
-    t.route.includes('album_details') && o.route.includes('my_file') && (flag = true)
-  }
-  return flag
-}
-const backhome = () => {
-  wx.reLaunch({
-    url: '/pages/home/main'
+const handleBack = () => {
+  wx.navigateBack({
+    delta: 1
   })
 }
 
-const { statusBarHeight, showBack, showHome } = toRefs(state)
+const handleHome = () => {
+  wx.reLaunch({
+    url: '/pages/home/index'
+  })
+}
+
+const { showBack, showHome } = toRefs(state)
 </script>
 
 <style lang="scss" scoped>
@@ -156,30 +121,29 @@ const { statusBarHeight, showBack, showHome } = toRefs(state)
   position: sticky;
   top: 0;
   z-index: 999;
-}
+  .status-bar {
+    width: 100%;
+  }
 
-.status-bar {
-  width: 100%;
-}
-
-.header {
-  box-sizing: border-box;
-  position: relative;
-}
-
-.nav-title {
-  color: #333;
-  font-size: 36rpx;
-  font-weight: 600;
-  left: 50%;
-  margin: auto;
-  max-width: 300rpx;
-  overflow: hidden;
-  position: absolute;
-  text-overflow: ellipsis;
-  top: 47%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
+  .header {
+    box-sizing: border-box;
+    position: relative;
+    height: 80rpx;
+    .nav-title {
+      color: #333;
+      font-size: 36rpx;
+      font-weight: 600;
+      left: 50%;
+      margin: auto;
+      max-width: 300rpx;
+      overflow: hidden;
+      position: absolute;
+      text-overflow: ellipsis;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+  }
 }
 
 .nav-capsule {
@@ -193,7 +157,7 @@ const { statusBarHeight, showBack, showHome } = toRefs(state)
 .just-back,
 .nav-capsule {
   position: absolute;
-  top: 47%;
+  top: 50%;
   transform: translateY(-50%);
 }
 
@@ -224,19 +188,9 @@ const { statusBarHeight, showBack, showHome } = toRefs(state)
   font-size: 34rpx;
 }
 
-.nav-text {
-  font-size: 28rpx;
-}
-
-.just-back:after,
 .nav-capsule:after {
   border: 2rpx solid #e8eaef;
   border-radius: 64rpx;
-}
-
-.gray:after,
-.just-back:after,
-.nav-capsule:after {
   box-sizing: border-box;
   content: '';
   height: 200%;
@@ -247,10 +201,5 @@ const { statusBarHeight, showBack, showHome } = toRefs(state)
   transform-origin: left top;
   width: 200%;
   z-index: -1;
-}
-
-.gray:after {
-  border: 2rpx solid #333;
-  border-radius: 64rpx;
 }
 </style>

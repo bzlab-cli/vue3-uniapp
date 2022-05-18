@@ -13,7 +13,8 @@ module.exports = {
     IObjModel: true,
     IResponseModel: true,
     uni: true,
-    wx: true
+    wx: true,
+    getCurrentPages: true
   },
   extends: [
     'plugin:vue/vue3-recommended',
