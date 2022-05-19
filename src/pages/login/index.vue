@@ -1,69 +1,71 @@
 <template>
-  <view class="login_wrap">
+  <view class="login-wrap">
     <custom-nav hide-home></custom-nav>
-    <view class="login_container">
-      <view class="login_title">
+    <view class="login-container">
+      <view class="title-box">
         <image src="/static/images/login/logo.png"></image>
       </view>
-      <view v-if="mode == 'sms'">
-        <view class="input_wrap">
+      <view v-if="mode == 'sms'" class="sms-box">
+        <view class="input-wrap">
           <input
-            class="flex_input"
+            class="flex-input"
             placeholder="请输入手机号"
-            placeholderStyle="color:#cccccc"
+            placeholderStyle="color: #cccccc"
             type="number"
             :value="phoneNum"
             @input="phoneOnInput"
           />
         </view>
-        <view class="input_wrap">
+        <view class="input-wrap">
           <input
-            class="flex_input"
+            class="flex-input"
             placeholder="请输入验证码"
-            placeholderStyle="color:#cccccc"
+            placeholderStyle="color: #cccccc"
             type="number"
-            :value="modifyCode"
+            :value="verifyCode"
             @input="codeOnInput"
           />
           <view class="liner"></view>
-          <view :class="['login_getVerifyCode', [modifyCanClick ? 'activeFontColor' : '']]" @click="getCode">
-            {{ modifyCodeText }}
+          <view :class="['verify-code', [canClickCode ? 'active' : '']]" @click="getCode">
+            {{ codeText }}
           </view>
         </view>
-        <view class="login_btn" :style="'opacity:' + (canSubmit ? '1' : '0.5') + ';'" @click="confirmSubmit">登录</view>
+        <view class="login-btn" :style="['opacity:' + (canSubmit ? '1' : '0.5') + '']" @click="confirmSubmit">
+          登录
+        </view>
       </view>
       <view v-else>
         <button
           bindgetphonenumber="getPhoneNumber"
-          class="wechatLogin"
-          :disabled="isWxloginBtnDisable"
+          class="wechat-login"
+          :disabled="wxBtnDisable"
           openType="getPhoneNumber"
         >
-          <view class="wechatlogin-logo icon-wrap">
+          <view class="wechat-logo icon-wrap">
             <image
               alt=""
               class="auth-icon"
               src="https://yun.mcloud.139.com/miniprogram/static/img/icon32/wechat_icon@2x.png"
             ></image>
           </view>
-          <view class="authLoginText">微信登录</view>
+          <view class="auth-login-text">微信登录</view>
         </button>
       </view>
-      <view class="login_check" @click="checkChange">
+      <view class="login-check" @click="checkChange">
         <view class="login-tips-check icon-wrap">
-          <image v-if="loginTipsChecked" class="auth-icon" src="/static/images/login/muti-selected@2x.png" />
-          <image v-if="!loginTipsChecked" class="auth-icon" src="/static/images/login/muti-unselected@2x.png" />
+          <image v-if="checked" class="auth-icon" src="/static/images/login/muti-selected@2x.png" />
+          <image v-if="!checked" class="auth-icon" src="/static/images/login/muti-unselected@2x.png" />
         </view>
         我已阅读并同意
-        <label class="agree_tips" data-type="agree" @click="goToPage">用户使用协议</label>
+        <label class="agree-tips" data-type="agree" @click="goToPage">用户使用协议</label>
         与
-        <label class="agree_tips" data-type="secret" @click="goToPage">隐私政策</label>
+        <label class="agree-tips" data-type="secret" @click="goToPage">隐私政策</label>
       </view>
       <view class="other-login-tips">
         <text class="other-login-tips-btn" @click="switchOtherLogin">其他方式登录 ></text>
       </view>
-      <view class="login_tips">
-        <view class="login_tips_p">未注册用户登录后自动创建账号</view>
+      <view class="login-tips">
+        <view class="login-tips-p">未注册用户登录后自动创建账号</view>
       </view>
     </view>
   </view>
@@ -77,28 +79,40 @@ const state = reactive({
   mode: '',
   phoneNum: '',
   totalTime: 60,
-  modifyCodeText: '获取验证码',
-  modifyCanClick: false,
-  modifyCode: '',
+  codeText: '获取验证码',
+  canClickCode: false,
+  verifyCode: '',
   canSubmit: false,
-  loginTipsChecked: false,
-  isWxloginBtnDisable: false
+  checked: false,
+  wxBtnDisable: false
 })
 
 const phoneOnInput = e => {
-  var t = e.detail.value.trim()
-  state.phoneNum = t
-  if ((0 !== state.totalTime && 60 !== state.totalTime) || state.modifyCodeText.includes('s')) {
-    state.modifyCanClick = false
+  let val = e.detail.value.trim()
+  console.log('111', val)
+
+  state.phoneNum = val
+  state.canClickCode = !!val
+
+  if (state.verifyCode && val) {
+    state.canSubmit = true
   } else {
-    state.modifyCanClick = true
+    state.canSubmit = false
   }
+
+  // if ((0 !== state.totalTime && 60 !== state.totalTime) || state.codeText.includes('s')) {
+  //   state.canClickCode = false
+  // } else {
+  //   state.canClickCode = true
+  // }
 }
 
 const codeOnInput = e => {
-  var t = e.detail.value.trim()
-  state.modifyCode = t
-  if (state.phoneNum && state.modifyCode) {
+  let val = e.detail.value.trim()
+  console.log('222', val)
+
+  state.verifyCode = val
+  if (val && state.phoneNum) {
     state.canSubmit = true
   } else {
     state.canSubmit = false
@@ -106,11 +120,7 @@ const codeOnInput = e => {
 }
 
 const switchOtherLogin = () => {
-  if (state.mode === 'sms') {
-    state.mode = ''
-  } else {
-    state.mode = 'sms'
-  }
+  state.mode = state.mode === 'sms' ? '' : 'sms'
 }
 
 const getCode = () => {}
@@ -120,7 +130,7 @@ const confirmSubmit = () => {
 }
 
 const checkChange = () => {
-  state.loginTipsChecked = !state.loginTipsChecked
+  state.checked = !state.checked
 }
 
 const goToPage = () => {}
@@ -132,7 +142,7 @@ const smsLogin = () => {
     showIcon: true
   })
 }
-const { mode, modifyCanClick, loginTipsChecked, modifyCodeText } = toRefs(state)
+const { mode, phoneNum, verifyCode, canClickCode, checked, canSubmit, codeText } = toRefs(state)
 </script>
 
 <style lang="scss">
@@ -142,47 +152,40 @@ page {
 </style>
 
 <style lang="scss" scoped>
-.env-wrap {
-  color: #000;
-  font-size: 32rpx;
-  left: 60rpx;
-  position: fixed;
-  top: 160rpx;
-}
-
-.login_wrap {
+.login-wrap {
   background-color: #f8f9fb;
   height: 100%;
+  .login-container {
+    .title-box {
+      -webkit-box-pack: center;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 80rpx;
+      margin-top: 112rpx;
+      width: 100%;
+      image {
+        height: 124rpx;
+        width: 300rpx;
+      }
+    }
+    .sms-box {
+      .input-wrap {
+        -webkit-box-align: center;
+        align-items: center;
+        border-bottom: 1rpx solid #eaeaea;
+        display: flex;
+        height: 100rpx;
+        margin: 0 auto 28rpx;
+        padding-bottom: 18rpx;
+        padding-left: 28rpx;
+        padding-top: 18rpx;
+        width: 686rpx;
+      }
+    }
+  }
 }
 
-.login_title {
-  -webkit-box-pack: center;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 80rpx;
-  margin-top: 112rpx;
-  width: 100%;
-}
-
-.login_title image {
-  height: 124rpx;
-  width: 300rpx;
-}
-
-.input_wrap {
-  -webkit-box-align: center;
-  align-items: center;
-  border-bottom: 1rpx solid #eaeaea;
-  display: flex;
-  height: 100rpx;
-  margin: 0 auto 28rpx;
-  padding-bottom: 18rpx;
-  padding-left: 28rpx;
-  padding-top: 18rpx;
-  width: 686rpx;
-}
-
-.input_wrap,
+.input-wrap,
 input {
   box-sizing: border-box;
   font-size: 32rpx;
@@ -196,12 +199,12 @@ input {
   width: 100%;
 }
 
-.flex_input {
+.flex-input {
   -webkit-box-flex: 1;
   flex: 1;
 }
 
-.login_getVerifyCode {
+.verify-code {
   -webkit-box-align: center;
   -webkit-box-pack: center;
   align-items: center;
@@ -212,10 +215,9 @@ input {
   justify-content: center;
   opacity: 0.5;
   width: 168rpx;
-}
-
-.activeFontColor {
-  opacity: 1;
+  &.active {
+    opacity: 1;
+  }
 }
 
 .liner {
@@ -224,7 +226,7 @@ input {
   width: 1rpx;
 }
 
-.login_btn {
+.login-btn {
   background: #0065f2;
   border-radius: 50rpx;
   color: #fff;
@@ -236,7 +238,7 @@ input {
   text-align: center;
 }
 
-.wechatLogin,
+.wechat-login,
 button[disabled] {
   -webkit-box-pack: center !important;
   -webkit-box-align: center !important;
@@ -280,7 +282,7 @@ button[disabled] {
 }
 
 .authlogin-logo,
-.wechatlogin-logo {
+.wechat-logo {
   height: 40rpx;
   padding-right: 6rpx;
   width: 40rpx;
@@ -291,7 +293,7 @@ button[disabled] {
   width: 100%;
 }
 
-.authLoginText,
+.auth-login-text,
 .pass-login-tips {
   text-align: center;
 }
@@ -320,7 +322,7 @@ button[disabled] {
   text-align: center;
 }
 
-.login_tips {
+.login-tips {
   bottom: 32rpx;
   color: #999;
   font-size: 20rpx;
@@ -330,12 +332,12 @@ button[disabled] {
   right: 0;
 }
 
-.login_tips_p {
+.login-tips-p {
   padding: 5rpx 0;
   text-align: center;
 }
 
-.agree_tips {
+.agree-tips {
   color: #0065f2;
 }
 
@@ -345,7 +347,7 @@ button[disabled] {
   width: 24rpx;
 }
 
-.login_check {
+.login-check {
   -webkit-box-align: center;
   align-items: center;
   display: flex;
