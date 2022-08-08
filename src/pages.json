@@ -17,7 +17,13 @@
       "style": {
         "navigationBarTitleText": "我的"
       }
-    }
+    },
+    {
+      "path": "pages/subscribe/index",
+      "style": {
+        "navigationBarTitleText": "订阅"
+      }
+    },
   ],
   "globalStyle": {
     "enablePullDownRefresh": false,
