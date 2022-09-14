@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/09/02 11:05:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/09 15:47:28
+ * @LastEditTime: 2022/09/14 17:32:57
  */
 
 import path from 'path'
@@ -11,10 +11,8 @@ import fs from 'fs'
 import lodash from 'lodash'
 import stripJsonComments from 'strip-json-comments'
 
-// 默认拷贝目录
 let defaultCopy = ['common', 'wxs', 'mixins']
 
-// 独立出来的方法 组件依赖寻找
 const deepFindUsingComponents = jsonPath => {
   let jsonFilePath
   if (jsonPath.indexOf('/wxcomponents/') !== -1) {
@@ -52,25 +50,16 @@ export default () => {
   const jsonFilePath = path.resolve(process.env.UNI_INPUT_DIR as string, 'pages.json')
   const pagesJson = JSON.parse(stripJsonComments(fs.readFileSync(jsonFilePath, 'utf8')))
   let allUsingComponents = {}
-  /**
-   * 获取page中的usingComponents
-   */
   for (let index = 0; index < pagesJson.pages.length; index++) {
     allUsingComponents = {
       ...allUsingComponents,
       ...lodash.get(pagesJson.pages[index], 'style.usingComponents')
     }
   }
-  /**
-   * 获取globalStyle中的usingComponents
-   */
   allUsingComponents = {
     ...allUsingComponents,
     ...lodash.get(pagesJson, 'globalStyle.usingComponents', {})
   }
-  /**
-   * 组件依赖关系的usingComponents
-   */
   const allUsingComponentsPathArr = Object.values(allUsingComponents)
   for (let index = 0; index < allUsingComponentsPathArr.length; index++) {
     allUsingComponents = {
@@ -80,7 +69,6 @@ export default () => {
   }
   defaultCopy = defaultCopy.concat(Object.keys(allUsingComponents))
   return Array.from(defaultCopy, item => {
-    // 删除目录名称没有van-
     return item.replace('van-', '')
   })
 }

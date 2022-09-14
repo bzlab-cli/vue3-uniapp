@@ -201,6 +201,9 @@ page {
         width: 22px;
         height: 22px;
       }
+      .t-center {
+        font-size: 32rpx;
+      }
     }
     .check-box {
       align-items: center;
