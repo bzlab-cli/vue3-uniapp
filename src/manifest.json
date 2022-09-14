@@ -50,6 +50,9 @@
   "quickapp": {},
   /* 小程序特有相关 */
   "mp-weixin": {
+    "scripts": {
+      "beforeUpload": "node ./bin/upload.js"
+    },
     "appid": "wx1a0798079829e266",
     "setting": {
       "urlCheck": false,

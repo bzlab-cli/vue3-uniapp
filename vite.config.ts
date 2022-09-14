@@ -12,14 +12,19 @@ export default ({ command, mode }) => {
       deploy: 'build',
       prod: 'build'
     }
-
     const vantPaths = Array.from(Vant(), item => {
       return {
         src: `node_modules/@vant/weapp/dist/${item}`,
         dest: `dist/${env[mode]}/mp-weixin/wxcomponents/vant`
       }
     })
-    return [...vantPaths]
+    const binPaths = [
+      {
+        src: `bin`,
+        dest: `dist/${env[mode]}/mp-weixin`
+      }
+    ]
+    return [...vantPaths, ...binPaths]
   }
 
   const config = {
@@ -35,7 +40,7 @@ export default ({ command, mode }) => {
       cors: true,
       port: 6450,
       proxy: {
-        '/business-web': {
+        '/village-service': {
           target: 'http://localhost:6300',
           changeOrigin: true
         }
