@@ -25,6 +25,7 @@
     "@dcloudio/uni-quickapp-webview": "^3.0.0-alpha-3030220211217008",
     "@vant/weapp": "^1.10.3",
     "axios": "^0.21.1",
+    "dayjs": "^1.11.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
     "koa-logger": "^3.2.1",
