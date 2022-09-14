@@ -7,7 +7,8 @@
     "build:deploy": "uni build -p mp-weixin --mode deploy",
     "build": "uni build -p mp-weixin --mode prod",
     "lint": "eslint --ext .js,.jsx,.vue,.ts,.tsx src --fix",
-    "mock": "cd mock && ts-node-dev mock.ts"
+    "mock": "cd mock && ts-node-dev mock.ts",
+    "publish": "node ./bin/publish.js"
   },
   "dependencies": {
     "@dcloudio/uni-app": "^3.0.0-alpha-3030220211217008",
