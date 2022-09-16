@@ -23,7 +23,6 @@
     "@dcloudio/uni-mp-toutiao": "^3.0.0-alpha-3030220211217008",
     "@dcloudio/uni-mp-weixin": "^3.0.0-alpha-3030220211217008",
     "@dcloudio/uni-quickapp-webview": "^3.0.0-alpha-3030220211217008",
-    "@vant/weapp": "^1.10.3",
     "axios": "^0.21.1",
     "dayjs": "^1.11.0",
     "koa": "^2.13.0",
@@ -34,6 +33,7 @@
     "lodash": "^4.17.20",
     "log4js": "^6.3.0",
     "reflect-metadata": "^0.1.13",
+    "uview-plus": "^3.1.12",
     "vue": "^3.2.26",
     "vuex": "^4.0.2"
   },

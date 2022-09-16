@@ -2,29 +2,22 @@ import { resolve } from 'path'
 import uni from '@dcloudio/vite-plugin-uni'
 import eslintPlugin from 'vite-plugin-eslint'
 import copy from 'rollup-plugin-copy'
-import Vant from './src/utils/vant'
 
 export default ({ command, mode }) => {
   console.log('command', command, mode)
-  const getVantPaths = () => {
+  const getComponentPaths = () => {
     const env = {
       dev: 'dev',
       deploy: 'build',
       prod: 'build'
     }
-    const vantPaths = Array.from(Vant(), item => {
-      return {
-        src: `node_modules/@vant/weapp/dist/${item}`,
-        dest: `dist/${env[mode]}/mp-weixin/wxcomponents/vant`
-      }
-    })
     const binPaths = [
       {
         src: `bin`,
         dest: `dist/${env[mode]}/mp-weixin`
       }
     ]
-    return [...vantPaths, ...binPaths]
+    return [...binPaths]
   }
 
   const config = {
@@ -33,7 +26,7 @@ export default ({ command, mode }) => {
       uni(),
       eslintPlugin(),
       copy({
-        targets: getVantPaths() as any
+        targets: getComponentPaths() as any
       })
     ],
     server: {
