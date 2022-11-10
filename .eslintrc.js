@@ -48,6 +48,7 @@ module.exports = {
     'no-param-reassign': ['off'],
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-var-requires': 0,
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'no-useless-catch': 'off'
   }
 }

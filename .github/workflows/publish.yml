@@ -16,17 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: 初始化node环境
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org/
-
       - name: Read package.json
         uses: tyankatsu0105/read-package-version-actions@v1
         with:
           path: './'
         id: package-version
+
+      - name: delete-release
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: v${{ steps.package-version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: 初始化node环境
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/
 
       - name: Create Release for Tag
         id: release_tag
