@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, reactive, watch, toRefs, computed } from 'vue'
+import { reactive, watch, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()

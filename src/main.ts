@@ -1,8 +1,7 @@
 import { createSSRApp } from 'vue'
 import App from './App.vue'
 import { store } from './store'
-// import { loadAllPlugins } from '@/plugins'
-import uviewPlus from 'uview-plus'
+import { loadAllPlugins } from '@/plugins'
 
 const getSystemInfo = () => {
   uni.getSystemInfo({
@@ -17,9 +16,8 @@ const getSystemInfo = () => {
 
 export function createApp() {
   const app = createSSRApp(App)
-  // loadAllPlugins(app)
   getSystemInfo()
-  app.use(uviewPlus)
+  loadAllPlugins(app)
   app.use(store)
   return {
     app
