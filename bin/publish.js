@@ -49,12 +49,13 @@ function getRobotName() {
 
 async function upload() {
   let pkg = fs.readFileSync('./package.json').toString()
+  let curName = JSON.parse(pkg).name
   let curVersion = JSON.parse(pkg).version
   let random = dayjs().format('HHmmss')
   const [major, minor] = curVersion.split('.')
 
   const version = `${major}.${minor}.${random}`
-  const versionDesc = `类型：${getRobotName()}\r\n版本：${version}\r\n分支: ${getBranch()}`
+  const versionDesc = `类型：${curName}${getRobotName()}\r\n版本：${version}\r\n分支: ${getBranch()}`
   console.log('versionDesc', versionDesc)
 
   const project = new ci.Project({
