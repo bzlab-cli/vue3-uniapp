@@ -24,7 +24,9 @@ export default ({ command, mode }) => {
     base: '/',
     plugins: [
       uni(),
-      eslintPlugin(),
+      eslintPlugin({
+        exclude: ['node_modules']
+      }),
       copy({
         targets: getComponentPaths() as any
       })
