@@ -23,7 +23,7 @@
       "style": {
         "navigationBarTitleText": "订阅"
       }
-    },
+    }
   ],
   "globalStyle": {
     "enablePullDownRefresh": false,
