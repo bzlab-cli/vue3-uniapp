@@ -11,7 +11,7 @@ import axios from '@/utils/axios'
 export const login = (data: any) => {
   return axios.request<IResponseModel<any>>({
     baseURL: import.meta.env.VITE_APP_BASE_API,
-    url: '/thirdUser/loginIn',
+    url: '/user/login',
     method: 'post',
     data
   })
@@ -20,7 +20,7 @@ export const login = (data: any) => {
 export const userInfo = () => {
   return axios.request<IResponseModel<any>>({
     baseURL: import.meta.env.VITE_APP_BASE_API,
-    url: '/thirdUser/getUserByToken',
+    url: '/user/getUserByToken',
     method: 'get'
   })
 }

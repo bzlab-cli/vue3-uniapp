@@ -11,7 +11,7 @@ import user from '../data/user'
 
 @prefix('/business-web')
 export default class User {
-  @post('/thirdUser/loginIn')
+  @post('/user/login')
   async login(ctx: any) {
     return {
       userId: '96f3eddc-4396-11ec-87ee-0242ac110002',
@@ -26,7 +26,7 @@ export default class User {
     return ctx.throw(401)
   }
 
-  @get('/thirdUser/getUserByToken')
+  @get('/user/getUserByToken')
   async getUserInfo() {
     return user
   }
