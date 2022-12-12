@@ -69,7 +69,6 @@
 </template>
 
 <script lang="ts" setup>
-import customNav from '@/components/custom-nav'
 import { reactive, toRefs } from 'vue'
 
 const state = reactive({

@@ -7,7 +7,6 @@
 
 <script lang="ts" setup>
 import { login } from '@/api/user'
-import customNav from '@/components/custom-nav'
 
 const test = () => {
   console.log('home')

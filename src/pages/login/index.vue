@@ -61,7 +61,6 @@
 
 <script lang="ts" setup>
 import { computed, reactive, toRefs } from 'vue'
-import customNav from '@/components/custom-nav'
 
 const state = reactive({
   showMode: 'wechat',
@@ -120,8 +119,8 @@ page {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 80rpx;
-      margin-top: 112rpx;
+      padding-top: 112rpx;
+      padding-bottom: 80rpx;
       width: 100%;
       color: #333;
       image {
@@ -241,6 +240,7 @@ page {
       position: fixed;
       right: 0;
       .desc {
+        font-size: 20rpx;
         padding: 5rpx 0;
         text-align: center;
       }
