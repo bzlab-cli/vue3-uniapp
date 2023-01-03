@@ -7,9 +7,9 @@ export default ({ command, mode }) => {
   console.log('command', command, mode)
   const getComponentPaths = () => {
     const env = {
-      dev: 'dev',
-      deploy: 'build',
-      prod: 'build'
+      development: 'dev',
+      deployment: 'build',
+      production: 'build'
     }
     const binPaths = [
       {

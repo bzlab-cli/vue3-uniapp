@@ -3,14 +3,13 @@
  * @Description:
  * @Date: 2022/03/12 15:05:14
  * @LastEditors: jrucker
- * @LastEditTime: 2022/04/10 15:10:15
+ * @LastEditTime: 2023/01/03 15:28:54
  */
 
 // @ts-nocheck
 import mimeMap from './mime'
 
 function FormData() {
-  let fileManager = wx.getFileSystemManager()
   let data = {}
   let files = []
 
@@ -19,20 +18,26 @@ function FormData() {
     return true
   }
 
-  this.appendFile = (name, path, fileName) => {
-    let buffer = fileManager.readFileSync(path)
+  this.readAsArrayBuffer = (file) => {
+		return new Promise(resolve => {
+			let reader = new FileReader();
+			reader.readAsArrayBuffer(file);
+			reader.onload = function() {
+				return resolve(this.result);
+			}
+		})
+	}
+
+  this.appendFile = async (name, path, fileName) => {
+    let buffer = await this.readAsArrayBuffer(path)
     if (Object.prototype.toString.call(buffer).indexOf('ArrayBuffer') < 0) {
       return false
     }
 
-    if (!fileName) {
-      fileName = getFileNameFromPath(path)
-    }
-
     files.push({
-      name: name,
-      buffer: buffer,
-      fileName: fileName
+      name,
+      buffer,
+      fileName
     })
     return true
   }

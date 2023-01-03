@@ -3,8 +3,47 @@
  * @Description: 工具类
  * @Date: 2021/09/02 16:08:22
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/07 16:18:36
+ * @LastEditTime: 2023/01/03 15:29:51
  */
+
+export function isH5() {
+  let flag = false
+  // #ifdef H5
+  flag = true
+  // #endif
+  return flag
+}
+
+/**
+ * 获取设备类型（默认h5）
+ * @returns
+ */
+export function getDeviceType() {
+  let device = 'h5'
+  // #ifdef H5
+  device = 'h5'
+  // #endif
+  // #ifdef APP-PLUS
+  device = 'app'
+  // #endif
+  // #ifdef MP-WEIXIN
+  device = 'wx'
+  // #endif
+  return device
+}
+/**
+ * 随机字符串
+ * @param o
+ * @returns
+ */
+export function guid(format = 'xxxxxxxxxxxx') {
+  let d = new Date().getTime()
+  return format.replace(/[xy]/g, c => {
+    const r = (d + Math.random() * 16) % 16 | 0
+    d = Math.floor(d / 16)
+    return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16)
+  })
+}
 
 /**
  * 是否数组
