@@ -15,7 +15,8 @@
     "app:build": "uni build -p app --mode production",
     "lint": "eslint --ext .js,.jsx,.vue,.ts,.tsx src --fix",
     "mock": "cd mock && ts-node-dev mock.ts",
-    "publish": "node ./bin/publish.js"
+    "publish": "node ./bin/publish.js",
+    "sftp": "node ./bin/sftp.js"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-3040820220424001",
@@ -45,6 +46,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@bzlab/bz-sftp-upload": "0.0.1",
     "@dcloudio/types": "^2.6.11",
     "@dcloudio/uni-automator": "3.0.0-alpha-3040820220424001",
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-3040820220424001",
