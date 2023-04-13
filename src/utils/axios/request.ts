@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/10/25 18:56:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/16 21:31:49
+ * @LastEditTime: 2023/04/13 18:39:25
  */
 
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios'
@@ -11,8 +11,16 @@ import axios from 'axios'
 import { useStore } from '@/store'
 import { UserActionTypes } from '@/store/modules/user/types'
 import { showToast } from '@/utils'
-import settle from 'axios/lib/core/settle'
 import buildURL from 'axios/lib/helpers/buildURL'
+
+function settle(resolve, reject, response) {
+  const validateStatus = response.config.validateStatus
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response)
+  } else {
+    reject({ response })
+  }
+}
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
