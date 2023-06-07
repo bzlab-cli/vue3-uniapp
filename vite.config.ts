@@ -12,10 +12,8 @@ export default ({ command, mode }) => {
       production: 'build'
     }
     const binPaths = [
-      {
-        src: `bin`,
-        dest: `dist/${env[mode]}/mp-weixin`
-      }
+      { src: `bin/publish.js`, dest: `dist/${env[mode]}/mp-weixin/bin` },
+      { src: `bin/sftp.js`, dest: `dist/${env[mode]}/mp-weixin/bin` }
     ]
     return [...binPaths]
   }
