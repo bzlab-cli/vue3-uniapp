@@ -23,7 +23,7 @@ jobs:
         id: package-version
 
       - name: delete-release
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
           delete_release: true
           tag_name: v${{ steps.package-version.outputs.version }}
