@@ -100,6 +100,9 @@ const smsLogin = () => {
     mask: true,
     showIcon: true
   })
+  uni.switchTab({
+    url: '/pages/home/index'
+  })
 }
 const { showMode, mobile, code, placeholderStyle, codeActive, checked, codeText } = toRefs(state)
 </script>
@@ -112,7 +115,6 @@ page {
 
 <style lang="scss" scoped>
 .login {
-  background-color: #f8f9fb;
   height: 100%;
   .content {
     .logo {

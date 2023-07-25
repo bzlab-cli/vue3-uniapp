@@ -36,11 +36,11 @@ const props = defineProps({
   },
   bgColor: {
     type: String,
-    default: '#F8F9FB'
+    default: '#FFFFFF'
   },
   fontColor: {
     type: String,
-    default: '#333'
+    default: '#3C3C3C'
   },
   hideBack: {
     type: Boolean,

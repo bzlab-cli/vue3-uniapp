@@ -1,7 +1,8 @@
 import { createSSRApp } from 'vue'
 import App from './App.vue'
 import { store } from './store'
-import { loadAllPlugins } from '@/plugins'
+import uviewPlus from 'uview-plus'
+import customNav from '@/components/custom-nav/index.vue'
 
 const getSystemInfo = () => {
   uni.getSystemInfo({
@@ -16,8 +17,9 @@ const getSystemInfo = () => {
 
 export function createApp() {
   const app = createSSRApp(App)
+  app.component('CustomNav', customNav)
+  app.use(uviewPlus)
   getSystemInfo()
-  loadAllPlugins(app)
   app.use(store)
   return {
     app
