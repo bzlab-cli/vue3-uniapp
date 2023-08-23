@@ -22,9 +22,7 @@ export default ({ command, mode }) => {
     base: '/',
     plugins: [
       uni(),
-      eslintPlugin({
-        exclude: ['node_modules']
-      }),
+      eslintPlugin({ cache: false }),
       copy({
         targets: getComponentPaths() as any
       })
