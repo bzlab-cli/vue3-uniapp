@@ -23,8 +23,8 @@ function getEnv() {
 function getBranch() {
   let env = getEnv()
   const obj = {
-    deploy: 'release',
-    prod: 'release'
+    deploy: 'test',
+    prod: 'master'
   }
   return obj[env]
 }
