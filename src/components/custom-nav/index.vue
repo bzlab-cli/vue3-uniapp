@@ -1,9 +1,9 @@
 <template>
   <view class="nav-wrap" :style="['background:' + props.bgColor]">
     <view class="status-bar" :style="['height:' + statusBarHeight + 'rpx']"></view>
-    <view class="header">
+    <view class="header" :style="['height:' + headerHeight + 'rpx']">
       <view class="nav-title" :style="['color: ' + props.fontColor]">{{ props.title }}</view>
-      <view v-if="showBack || showHome" class="'nav-capsule is-both">
+      <view v-if="showBack || showHome" :class="['nav-capsule' + (showBack && showHome ? ' is-both' : '')]">
         <view v-if="showBack" class="nav-icon-wrap" @click="handleBack">
           <view class="iconfont icon-back" :style="['color: ' + props.iconColor]"></view>
         </view>
@@ -54,6 +54,10 @@ const props = defineProps({
 
 const statusBarHeight = computed(() => {
   return store.state.app.statusBarHeight
+})
+
+const headerHeight = computed(() => {
+  return store.state.app.headerHeight
 })
 
 const state = reactive({
@@ -118,7 +122,8 @@ const { showBack, showHome } = toRefs(state)
 .nav-wrap {
   background: transparent;
   color: #000;
-  position: sticky;
+  position: fixed;
+  width: 100%;
   top: 0;
   z-index: 999;
   .status-bar {
@@ -128,7 +133,6 @@ const { showBack, showHome } = toRefs(state)
   .header {
     box-sizing: border-box;
     position: relative;
-    height: 80rpx;
     .nav-title {
       color: #333;
       font-size: 36rpx;
@@ -165,12 +169,16 @@ const { showBack, showHome } = toRefs(state)
   left: 32rpx;
 }
 
-.nav-icon-wrap {
+.nav-capsule.is-both .nav-icon-wrap {
+  padding: 7rpx 25rpx;
+}
+
+.nav-capsule .nav-icon-wrap {
   -webkit-box-align: center;
   align-items: center;
   display: flex;
   justify-content: space-around;
-  padding: 7rpx 25rpx;
+  padding: 7rpx 4rpx;
 }
 
 .is-both .navbar-v-line {
@@ -188,7 +196,7 @@ const { showBack, showHome } = toRefs(state)
   font-size: 34rpx;
 }
 
-.nav-capsule:after {
+.nav-capsule.is-both:after {
   border: 2rpx solid #e8eaef;
   border-radius: 64rpx;
   box-sizing: border-box;

@@ -1,61 +1,63 @@
 <template>
   <view class="login">
-    <custom-nav hide-home></custom-nav>
-    <view class="content">
-      <view class="logo">
-        <image src="/static/images/login/logo.png"></image>
-        <view>小程序</view>
-      </view>
-      <view v-if="showMode == 'mobile'" class="mobile-box">
-        <view class="input-wrap">
-          <input
-            v-model="mobile"
-            placeholder="请输入手机号"
-            :placeholderStyle="placeholderStyle"
-            type="number"
-            @input="handleMobileInput"
-          />
+    <custom-nav hide-home title="登录"></custom-nav>
+    <custom-layout>
+      <view class="content">
+        <view class="logo">
+          <image src="/static/images/login/logo.png"></image>
+          <view>小程序</view>
         </view>
-        <view class="input-wrap">
-          <input
-            v-model="code"
-            placeholder="请输入验证码"
-            :placeholderStyle="placeholderStyle"
-            type="number"
-            @input="handleMobileInput"
-          />
-          <view class="liner"></view>
-          <view :class="['code', [codeActive ? 'active' : '']]" @click="getCode">
-            {{ codeText }}
+        <view v-if="showMode == 'mobile'" class="mobile-box">
+          <view class="input-wrap">
+            <input
+              v-model="mobile"
+              placeholder="请输入手机号"
+              :placeholderStyle="placeholderStyle"
+              type="number"
+              @input="handleMobileInput"
+            />
           </view>
-        </view>
-        <view class="submit-btn" :style="submitStyle" @click="confirmSubmit">登录</view>
-      </view>
-      <view v-if="showMode == 'wechat'" class="wechat-box">
-        <button bindgetphonenumber="getPhoneNumber" class="number-btn" openType="getPhoneNumber">
-          <view class="icon-wrap">
-            <image class="wechat-icon mr5" src="/static/images/login/wechat.png" />
+          <view class="input-wrap">
+            <input
+              v-model="code"
+              placeholder="请输入验证码"
+              :placeholderStyle="placeholderStyle"
+              type="number"
+              @input="handleMobileInput"
+            />
+            <view class="liner"></view>
+            <view :class="['code', [codeActive ? 'active' : '']]" @click="getCode">
+              {{ codeText }}
+            </view>
           </view>
-          <view class="t-center">微信登录</view>
-        </button>
-      </view>
-      <view class="check-box" @click="checked = !checked">
-        <view class="tips-check icon-wrap">
-          <image v-if="checked" class="icon" src="/static/images/login/muti-selected.png" />
-          <image v-if="!checked" class="icon" src="/static/images/login/muti-unselected.png" />
+          <view class="submit-btn" :style="submitStyle" @click="confirmSubmit">登录</view>
         </view>
-        我已阅读并同意
-        <label class="agree">用户使用协议</label>
-        与
-        <label class="agree">隐私政策</label>
+        <view v-if="showMode == 'wechat'" class="wechat-box">
+          <button bindgetphonenumber="getPhoneNumber" class="number-btn" openType="getPhoneNumber">
+            <view class="icon-wrap">
+              <image class="wechat-icon mr5" src="/static/images/login/wechat.png" />
+            </view>
+            <view class="t-center">微信登录</view>
+          </button>
+        </view>
+        <view class="check-box" @click="checked = !checked">
+          <view class="tips-check icon-wrap">
+            <image v-if="checked" class="icon" src="/static/images/login/muti-selected.png" />
+            <image v-if="!checked" class="icon" src="/static/images/login/muti-unselected.png" />
+          </view>
+          我已阅读并同意
+          <label class="agree">用户使用协议</label>
+          与
+          <label class="agree">隐私政策</label>
+        </view>
+        <view class="other-box">
+          <text class="text" @click="handleSwitchLogin">其他方式登录 ></text>
+        </view>
+        <view class="desc-box">
+          <view class="desc">未注册用户登录后自动创建账号</view>
+        </view>
       </view>
-      <view class="other-box">
-        <text class="text" @click="handleSwitchLogin">其他方式登录 ></text>
-      </view>
-      <view class="desc-box">
-        <view class="desc">未注册用户登录后自动创建账号</view>
-      </view>
-    </view>
+    </custom-layout>
   </view>
 </template>
 

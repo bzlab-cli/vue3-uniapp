@@ -3,6 +3,7 @@ import App from './App.vue'
 import { store } from './store'
 import uviewPlus from 'uview-plus'
 import customNav from '@/components/custom-nav/index.vue'
+import customLayout from '@/components/custom-layout/index.vue'
 
 const getSystemInfo = () => {
   uni.getSystemInfo({
@@ -18,6 +19,7 @@ const getSystemInfo = () => {
 export function createApp() {
   const app = createSSRApp(App)
   app.component('CustomNav', customNav)
+  app.component('CustomLayout', customLayout)
   app.use(uviewPlus)
   getSystemInfo()
   app.use(store)
