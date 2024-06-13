@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021/10/25 18:56:51
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/06 17:06:46
+ * @LastEditTime: 2024/06/13 15:49:29
  */
 
 export class keys {
@@ -17,9 +17,9 @@ export enum settings {
 
 export function getEnv(val: string) {
   const obj = {
-    development: 'nzf-dev',
-    deployment: 'nzf-dev',
-    production: 'nzf-prod'
+    development: 'mock-dev',
+    deployment: 'mock-dev',
+    production: 'mock-prod'
   } as any
   return obj[val]
 }

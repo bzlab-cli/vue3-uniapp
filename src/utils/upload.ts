@@ -1,13 +1,30 @@
 /*
- * 上传文件
- * 1、基础使用
- * let result = await new Upload().uploadImage(); 上传图片
- * let result = await new Upload().uploadFile(); 上传文件
+ 上传文件
+ 1、基础使用
+   let result = await new Upload().uploadImage(); 上传图片
+   let result = await new Upload().uploadVideo(); 上传视频
+   let result = await new Upload().uploadFile(); 上传文件
+ 2、上传限制大小
+   let result = await new Upload(options).uploadImage({
+      onLimit: info => {
+        if (info.size > 1024 * 1024 * 1) {
+          console.log('文件大小超过1M')
+          return false
+        }
+      }
+    })
+ 3、接口上传文件不使用ftp
+   const options = {
+      ftp: false,
+      url: import.meta.env.VITE_APP_BASE_API + '/putFile',
+      token: 'xxxxx'
+   }
+   let result = await new Upload(options).uploadImage()
  * @Author: jrucker
  * @Description:
  * @Date: 2022/03/11 16:50:49
  * @LastEditors: jrucker
- * @LastEditTime: 2023/01/03 11:39:47
+ * @LastEditTime: 2024/06/13 18:08:24
  */
 
 import { getFileName, getFileType, guid, getDeviceType } from '@/utils'
@@ -26,6 +43,7 @@ export default class Upload {
   object: any
   obj: {
     ftp: boolean
+    token: string
     url: string
     formData: any
     count: number
@@ -34,12 +52,12 @@ export default class Upload {
     sourceType: string[] // 可以指定来源是相册还是相机，默认二者都有
   }
   fileInfo: FileInfo
-  constructor(object) {
+  constructor(object?) {
     this.object = object || {}
     this.obj = {
       ftp: true,
-      url:
-        import.meta.env.VITE_APP_FTP_API + `/ftp/uploadFile?path=${getEnv(import.meta.env.VITE_APP_ENV)}/epc_file/$md5`,
+      token: '',
+      url: import.meta.env.VITE_APP_FTP_API + `/ftp/uploadFile?path=${getEnv(import.meta.env.VITE_APP_ENV)}/file/$md5`,
       formData: {},
       count: 1,
       type: 'all',
@@ -79,7 +97,7 @@ export default class Upload {
       }
       if (onLimit) {
         const before = onLimit(this.fileInfo)
-        if (!before) return false
+        if (typeof before !== 'undefined' && !before) return false
       }
       const uploadFileResult = (await this.handleUploadFile(path)) as any
       return uploadFileResult
@@ -88,8 +106,11 @@ export default class Upload {
     return new Promise(resolve => {
       Promise.all(imgArr).then((result: any) => {
         uni.hideLoading()
+        if (!result?.[0]) return
         result = result.map((item: any) => {
-          item.url = '/img' + item?.url
+          if (this.obj.ftp) {
+            item.url = '/img' + item?.url
+          }
           return item
         })
         resolve(result)
@@ -194,9 +215,9 @@ export default class Upload {
     return new Promise(async resolve => {
       let res
       if (getDeviceType() === 'h5') {
-        res = await this.ftpH5Request(file)
+        res = this.obj.ftp ? await this.ftpH5Request(file) : await this.h5Request(file)
       } else {
-        res = await this.ftpRequest(file)
+        res = this.obj.ftp ? await this.ftpRequest(file) : await this.request(file)
       }
       resolve(res)
     })
@@ -220,7 +241,7 @@ export default class Upload {
         method: 'POST',
         header,
         data: data.buffer,
-        success: res => {
+        success: (res: any) => {
           const result = res.data
           const url = result.data
           resolve({
@@ -270,6 +291,73 @@ export default class Upload {
     })
   }
 
+  h5Request(file) {
+    return new Promise(async (resolve, reject) => {
+      const formData = new FormData()
+      const name = this.fileInfo.name + '.' + this.fileInfo.type
+      await formData.appendFile('file', file, name)
+      const data = formData.getData()
+      const header = {
+        'Content-Type': data.contentType
+      } as any
+      if (getToken()) {
+        header.token = getToken()
+      }
+
+      uni.request({
+        url: this.obj.url,
+        method: 'POST',
+        header,
+        data: data.buffer,
+        success: (res: any) => {
+          const result = res.data
+          resolve({
+            ...result.data,
+            ...this.fileInfo
+          })
+        },
+        fail: () => {
+          reject('上传失败')
+        },
+        complete: () => {
+          uni.hideToast()
+        }
+      })
+    })
+  }
+
+  request(file) {
+    return new Promise((resolve, reject) => {
+      const formData = this.obj.formData
+      if (getToken()) {
+        formData.token = getToken()
+      }
+      uni.uploadFile({
+        url: this.obj.url,
+        filePath: file,
+        name: 'file',
+        header: {
+          'Content-Type': 'multipart/form-data',
+          token: this.obj.token
+        },
+        formData,
+        success: res => {
+          const result = JSON.parse(res.data)
+          resolve({
+            ...result.data,
+            ...this.fileInfo
+          })
+        },
+        fail: () => {
+          reject('上传失败')
+        },
+        complete: () => {
+          uni.hideToast()
+        }
+      })
+    })
+  }
+
   chooseImage() {
     return new Promise(resolve => {
       uni.chooseImage({
@@ -296,6 +384,7 @@ export default class Upload {
 
   chooseMessageFile() {
     return new Promise(resolve => {
+      // #ifdef MP-WEIXIN
       wx.chooseMessageFile({
         count: this.obj.count,
         type: this.obj.type,
@@ -303,6 +392,7 @@ export default class Upload {
           resolve(res)
         }
       })
+      // #endif
     })
   }
 }
