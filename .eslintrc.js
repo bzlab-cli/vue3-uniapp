@@ -50,8 +50,6 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'no-useless-catch': 'off',
     'prettier/prettier': 'error',
-    'vue/attributes-order': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
-    'vue/require-explicit-emits': 'error'
+    '@typescript-eslint/no-unused-vars': 'error'
   }
 }
