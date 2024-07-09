@@ -39,16 +39,19 @@ module.exports = {
     'no-plusplus': 'off',
     'no-useless-escape': 'off',
     'no-bitwise': 'off',
-    '@typescript-eslint/no-explicit-any': ['off'],
-    '@typescript-eslint/explicit-module-boundary-types': ['off'],
-    '@typescript-eslint/ban-ts-comment': ['off'],
-    'vue/no-setup-props-destructure': ['off'],
-    '@typescript-eslint/no-empty-function': ['off'],
-    '@typescript-eslint/no-unused-vars': [1],
-    'no-param-reassign': ['off'],
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'vue/no-setup-props-destructure': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'no-param-reassign': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-var-requires': 0,
     'vue/multi-word-component-names': 'off',
-    'no-useless-catch': 'off'
+    'no-useless-catch': 'off',
+    'prettier/prettier': 'error',
+    'vue/attributes-order': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'vue/require-explicit-emits': 'error'
   }
 }
