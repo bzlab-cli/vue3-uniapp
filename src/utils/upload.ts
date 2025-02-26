@@ -22,7 +22,7 @@
    let result = await new Upload(options).uploadImage()
  * @Author: jrucker
  * @Description:
- * @Date: 2022/03/11 16:50:49
+ * @Date: 2024/03/11 16:50:49
  * @LastEditors: jrucker
  * @LastEditTime: 2024/06/13 18:08:24
  */

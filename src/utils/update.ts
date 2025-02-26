@@ -1,9 +1,9 @@
 /*
  * @Author: jrucker
  * @Description: 小程序检测新版本
- * @Date: 2021/09/02 16:08:22
+ * @Date: 2024/09/02 16:08:22
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/11 17:45:36
+ * @LastEditTime: 2024/05/11 17:45:36
  */
 
 export const autoUpdate = () => {

@@ -5,9 +5,9 @@
  * 读取缓存 storage.get(key)
  * 移除缓存 storage.remove(key)
  * 清除缓存 storage.clear()
- * @Date: 2021/09/02 13:35:01
+ * @Date: 2024/09/02 13:35:01
  * @LastEditors: jrucker
- * @LastEditTime: 2022/05/10 23:15:40
+ * @LastEditTime: 2024/05/10 23:15:40
  */
 
 import { isObject } from './index'
