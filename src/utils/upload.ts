@@ -48,6 +48,7 @@ export default class Upload {
     formData: any
     count: number
     type: 'all' | 'video' | 'image' | 'file'
+    extension: string[]
     sizeType: string[] // 可以指定是原图还是压缩图，默认二者都有
     sourceType: string[] // 可以指定来源是相册还是相机，默认二者都有
   }
@@ -61,6 +62,7 @@ export default class Upload {
       formData: {},
       count: 1,
       type: 'all',
+      extension: [],
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'] // 可以指定来源是相册还是相机，默认二者都有
     }
@@ -364,6 +366,7 @@ export default class Upload {
         count: this.obj.count,
         sizeType: this.obj.sizeType,
         sourceType: this.obj.sourceType,
+        extension: this.obj.extension,
         success: res => {
           resolve(res)
         }
@@ -375,6 +378,7 @@ export default class Upload {
     return new Promise(resolve => {
       uni.chooseVideo({
         sourceType: this.obj.sourceType,
+        extension: this.obj.extension,
         success: res => {
           resolve([res])
         }
@@ -388,6 +392,18 @@ export default class Upload {
       wx.chooseMessageFile({
         count: this.obj.count,
         type: this.obj.type,
+        extension: this.obj.extension,
+        success: res => {
+          resolve(res)
+        }
+      })
+      // #endif
+      // #ifdef H5
+      uni.chooseFile({
+        count: this.obj.count,
+        type: this.obj.type,
+        sourceType: this.obj.sourceType,
+        extension: this.obj.extension,
         success: res => {
           resolve(res)
         }
